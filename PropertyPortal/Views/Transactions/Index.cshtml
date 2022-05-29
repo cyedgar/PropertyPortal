@@ -1,0 +1,55 @@
+﻿@model IEnumerable<PropertyPortal.Data.Transaction>
+@inject UserManager<ApplicationUser> UserManager
+@{
+     var user = await UserManager.GetUserAsync(User);
+}
+@{
+    ViewData["Title"] = "Transaction";
+}
+
+<h1>Transaction</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Property)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Property.PropertyName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransactionDate)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.TransactionId" class="btn btn-secondary">Details</a> 
+
+                @if (user.Id.Equals(item.UserId))
+               {
+                    <a asp-action="Edit" asp-route-id="@item.TransactionId" class="btn btn-primary">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.TransactionId" class="btn btn-danger">Delete</a>
+
+               }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
